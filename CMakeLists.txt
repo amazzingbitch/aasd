@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.23)
-project(alg_lab1)
+cmake_minimum_required(VERSION 3.20)
+project(untitled11)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
-add_executable(alg_lab1 main.cpp MyList.cpp MyList.h)
+add_executable(untitled11 main.cpp MyBST.cpp MyBST.h NodeBST.h)
