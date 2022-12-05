@@ -1,6 +1,6 @@
 #include <iostream>
 #include <list>
-#include "MyBST.h"
+#include "MyRB.h"
 #include <ctime>
 #include <cmath>
 
@@ -28,8 +28,8 @@ INT_64 LineRand() { //функция генерации случайного ч�
     return RRand;
 }
 
-void test_rand(int n) { //Тест трудоёмкости операций случайного BST-дерева
-    MyBST<INT_64, int> tree; //создание дерева для 64 – разрядных ключей типа INT_64
+/*void test_rand(int n) { //Тест трудоёмкости операций случайного BST-дерева
+    MyRB<INT_64, int> tree; //создание дерева для 64 – разрядных ключей типа INT_64
     auto* m = new INT_64 [n]; //массив для ключей, которые присутствуют в дереве
     sRand();  //установка первого случайного числа
 
@@ -83,7 +83,7 @@ void test_rand(int n) { //Тест трудоёмкости операций с�
 }
 
 void test_ord(int n) { //Тест трудоёмкости операций вырожденного BST-дерева
-    MyBST<INT_64,int> tree; //создание дерева для 64 – разрядных ключей типа INT_64
+    MyRB<INT_64,int> tree; //создание дерева для 64 – разрядных ключей типа INT_64
     INT_64* m = new INT_64 [n];//массив для ключей, которые присутствуют в дереве
 
     bool *ins = new bool;
@@ -140,7 +140,7 @@ void test_ord(int n) { //Тест трудоёмкости операций вы
     cout << "count delete: " << D/(n/2) << endl; //экспериментальной оценки трудоёмкости удаления
     cout << "count search: " << S/(n/2) << endl; //экспериментальной оценки трудоёмкости поиска
     delete[] m;
-}
+}*/
 
 int Check() {
     int m;
@@ -162,13 +162,11 @@ int Options() {
     cout << "1. Size of tree" << endl;
     cout << "2. Clear tree" << endl;
     cout << "3. Is tree empty?" << endl;
-    cout << "4. Height of tree" << endl;
     cout << "5. Find the value by key" << endl;
     cout << "6. Replace the value by key" << endl;
     cout << "8. Insert new value" << endl;
     cout << "9. Delete by key" << endl;
     cout << "10. Show tree" << endl;
-    cout << "11. Show list of tree keys" << endl;
     cout << "12. Exit" << endl;
     cout << "============================================" << endl;
     cout << "Enter the command:";
@@ -176,7 +174,7 @@ int Options() {
     return Check();
 }
 
-void Stat(MyBST<int,int>* G) {
+void Stat(MyRB<int,int>* G) {
     cout << "statistics = " << G->GetNum() << endl;
     G->SetNum();
 }
@@ -184,31 +182,31 @@ void Stat(MyBST<int,int>* G) {
 void Menu() {
     int k, j; bool f = true;
 
-    MyBST<int, int> G;
+    MyRB<int, int> G;
 
-    //MyBST<int, int> V(&G);
+    //MyRB<int, int> V(&G);
 
     std::list<int> p;
     bool *ins = new bool;
-    NodeBST<int, int> *t = nullptr;
+    NodeRB<int, int> *t = nullptr;
 
-    G.Insert(G.GetRoot(), 15, 45, ins);
-    G.Insert(G.GetRoot(), 10, 48, ins);
-    G.Insert(G.GetRoot(), 5, 41, ins);
-    G.Insert(G.GetRoot(), 50, 1, ins);
-    G.Insert(G.GetRoot(), 11, 11, ins);
-    G.Insert(G.GetRoot(), 21, 4, ins);
-    G.Insert(G.GetRoot(), 25, 41, ins);
-    G.Insert(G.GetRoot(), 52, 55, ins);
-    G.Insert(G.GetRoot(), 30, 30, ins);
+    G.Insert(G.GetRoot(), 15, 45);
+    G.Insert(G.GetRoot(), 10, 48);
+    G.Insert(G.GetRoot(), 5, 41);
+    G.Insert(G.GetRoot(), 50, 1);
+    G.Insert(G.GetRoot(), 11, 11);
+    G.Insert(G.GetRoot(), 21, 4);
+    G.Insert(G.GetRoot(), 25, 41);
+    G.Insert(G.GetRoot(), 52, 55);
+    G.Insert(G.GetRoot(), 30, 30);
     G.SetNum();
 
-    /*MyBST<int,int>::Iterator it(G.GetRoot(), &G);
+    /*MyRB<int,int>::Iterator it(G.GetRoot(), &G);
     cout << "Value of next node after root = " << *it.operator++() << endl;
     cout << "Value of previous node = " << *it.operator--() << endl;*/
 
-    //test_rand(100000);
-    //test_ord(20000);
+    //test_rand(100);
+    //test_ord(1000);
 
     while (f) {
         switch (Options()) {
@@ -227,10 +225,6 @@ void Menu() {
                 } else {
                     cout << "tree is not empty" << endl;
                 }
-                break;
-            case 4:
-                cout << "height of tree = " << G.Height(G.GetRoot()) << endl;
-                Stat(&G);
                 break;
             case 5:
                 cout << "Enter key to find in tree:" << endl;
@@ -253,8 +247,8 @@ void Menu() {
                 k = Check();
                 cout << "Enter value to insert:" << endl;
                 j = Check();
-                G.Insert(G.GetRoot(), k, j, ins);
-                if (*ins) cout << "Value was successfully added" << endl;
+
+                if (*G.Insert(G.GetRoot(), k, j)) cout << "Value was successfully added" << endl;
                 Stat(&G);
                 break;
             case 9:
@@ -265,12 +259,6 @@ void Menu() {
                 break;
             case 10:
                 G.Show(G.GetRoot(), 0);
-                Stat(&G);
-                break;
-            case 11:
-                G.t_L_R(G.GetRoot(), &p);
-                for (auto const &i: p) cout << i << " ";
-                cout << endl;
                 Stat(&G);
                 break;
             case 12:

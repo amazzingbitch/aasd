@@ -3,4 +3,4 @@ project(untitled11)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(untitled11 main.cpp MyBST.cpp MyBST.h NodeBST.h)
+add_executable(untitled11 main.cpp MyRB.cpp MyRB.h NodeRB.h)
