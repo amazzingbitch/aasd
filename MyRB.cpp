@@ -25,19 +25,22 @@ template<typename T, typename K>
 bool* MyRB<T, K>::Insert(NodeRB<T, K>* t, K k, T data) {
     bool* ins = new bool;
     *ins = false;
-    t = Insert1(t, k, data, 0, ins);
+    t = Insert1(t, k, data, 0, ins, nullptr);
     t->color = false;
     return ins;
 }
 
 template<typename T, typename K>
-NodeRB<T, K>* MyRB<T, K>::Insert1(NodeRB<T, K>* t, K k, T data, int s, bool* inserted) {
+NodeRB<T, K>* MyRB<T, K>::Insert1(NodeRB<T, K>* t, K k, T data, int s, bool* inserted, NodeRB<T, K>* p) {
     if (t == nullptr) {
         t = new NodeRB<T,K>(data, k);
-        if (root == nullptr) root = t;
+        if (root == nullptr) { root = t ; }
+        t->parent = p;
         t->color = true;
         *inserted = true;
         size++;
+        /*Show(GetRoot(), 0);
+        cout << endl;*/
         return t;
     }
     if (k == t->key) {
@@ -49,32 +52,30 @@ NodeRB<T, K>* MyRB<T, K>::Insert1(NodeRB<T, K>* t, K k, T data, int s, bool* ins
         if (t->left->color && t->right->color) {
             t->color = true;
             t->left->color = t->right->color = false;
-            *inserted = true;
+            *inserted = false;
             NumOfViews++;
-            return t;
+            //return t;
         }
     }
     bool* ins = new bool;
     if (k < t->key) {
-        t->left = Insert1(t->left, k, data, 0, ins);
-        t->left->parent = t;
+        t->left = Insert1(t->left, k, data, 0, ins, t);
         if (t->left != nullptr)
         if (t->color && t->left->color && s == 1) { t = R(t); cout << "rt" << k << endl;}
-        if (t->right != nullptr)
+        if (t->left != nullptr)
         if (t->left->left != nullptr) {
             if (t->color && t->left->left->color) {
                 t = R(t);
                 cout << "rt" << k << endl;
                 t->color = false;
-                t->right->color = true;
+                if (t->right != nullptr) t->right->color = true;
             }
         }
         inserted = ins;
         NumOfViews++;
         return t;
     } else {
-        t->right = Insert1(t->right, k, data, 1, ins);
-        t->right->parent = t;
+        t->right = Insert1(t->right, k, data, 1, ins, t);
         if (t->right != nullptr)
         if (t->color && t->right->color && s == 0) {t = L(t); cout << "lt" << k << endl; }
         if (t->right != nullptr)
@@ -83,7 +84,7 @@ NodeRB<T, K>* MyRB<T, K>::Insert1(NodeRB<T, K>* t, K k, T data, int s, bool* ins
                 t = L(t);
                 cout << "lt" << k << endl;
                 t->color = false;
-                t->left->color = true;
+                if (t->left != nullptr) t->left->color = true;
             }
         }
         inserted = ins;

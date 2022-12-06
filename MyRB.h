@@ -18,7 +18,7 @@ public:
     void Clear(NodeRB<T,K>* t);
     bool IsEmpty();
     bool* Insert(NodeRB<T,K>* t, K k, T data);
-    NodeRB<T,K>* Insert1(NodeRB<T,K>* t, K k, T data, int s, bool* inserted);
+    NodeRB<T,K>* Insert1(NodeRB<T,K>* t, K k, T data, int s, bool* inserted, NodeRB<T,K>* p);
     NodeRB<T, K>* L(NodeRB<T, K>* t);
     NodeRB<T, K>* R(NodeRB<T, K>* t);
     void replaceParentsChild(NodeRB<T, K> *parent, NodeRB<T, K> *oldChild, NodeRB<T, K> *newChild);
