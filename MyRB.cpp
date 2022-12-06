@@ -193,7 +193,7 @@ NodeRB<T, K>* MyRB<T, K>::insertHelp(NodeRB<T, K>* t, K k, T data, bool* inserte
 }
 
 template<typename T, typename K>
-NodeRB<T, K>* rotateLeft(NodeRB<T, K>* node) {
+NodeRB<T, K>* MyRB<T, K>::rotateLeft(NodeRB<T, K>* node) {
     NodeRB<T, K>* x = node->right;
     NodeRB<T, K>* y = x->left;
     x->left = node;
@@ -205,7 +205,7 @@ NodeRB<T, K>* rotateLeft(NodeRB<T, K>* node) {
 }
 
 template<typename T, typename K>
-NodeRB<T, K>* rotateRight(NodeRB<T, K>*node) {
+NodeRB<T, K>* MyRB<T, K>::rotateRight(NodeRB<T, K>*node) {
     NodeRB<T, K>* x = node->left;
     NodeRB<T, K>* y = x->right;
     x->right = node;
@@ -214,6 +214,50 @@ NodeRB<T, K>* rotateRight(NodeRB<T, K>*node) {
     if(y!= nullptr)
         y->parent = node;
     return(x);
+}
+
+template<typename T, typename K>
+void MyRB<T, K>::leftRotate(NodeRB<T, K>*x) {
+    // new parent will be node's right child
+    NodeRB<T, K>*nParent = x->right;
+
+    // update root if current node is root
+    if (x == root)
+        root = nParent;
+
+    x->moveDown(nParent);
+
+    // connect x with new parent's left element
+    x->right = nParent->left;
+    // connect new parent's left element with node
+    // if it is not null
+    if (nParent->left != nullptr)
+        nParent->left->parent = x;
+
+    // connect new parent with x
+    nParent->left = x;
+}
+
+template<typename T, typename K>
+void MyRB<T, K>::rightRotate(NodeRB<T, K>*x) {
+    // new parent will be node's left child
+    NodeRB<T, K>*nParent = x->left;
+
+    // update root if current node is root
+    if (x == root)
+        root = nParent;
+
+    x->moveDown(nParent);
+
+    // connect x with new parent's right element
+    x->left = nParent->right;
+    // connect new parent's right element with node
+    // if it is not null
+    if (nParent->right != nullptr)
+        nParent->right->parent = x;
+
+    // connect new parent with x
+    nParent->right = x;
 }
 
 template<typename T, typename K>
@@ -255,10 +299,13 @@ void MyRB<T, K>::swapColors(NodeRB<T, K> *x1, NodeRB<T, K> *x2) {
 
 template<typename T, typename K>
 void MyRB<T, K>::swapValues(NodeRB<T, K> *u, NodeRB<T, K> *v) {
-    T temp;
-    temp = u->value;
+    K temp; T temp2;
+    temp2 = u->value;
     u->value = v->value;
     v->value = temp;
+    temp = u->key;
+    u->key = v->key;
+    v->key = temp;
 }
 
 template<typename T, typename K>
@@ -287,22 +334,22 @@ void MyRB<T, K>::fixRedRed(NodeRB<T, K> *x) {
                     // for left right
                     swapColors(parent, grandparent);
                 } else {
-                    rotateLeft(parent);
+                    leftRotate(parent);
                     swapColors(x, grandparent);
                 }
                 // for left left and left right
-                rotateRight(grandparent);
+                rightRotate(grandparent);
             } else {
                 if (x->isOnLeft()) {
                     // for right left
-                    rotateRight(parent);
+                    rightRotate(parent);
                     swapColors(x, grandparent);
                 } else {
                     swapColors(parent, grandparent);
                 }
 
                 // for right right and right left
-                rotateLeft(grandparent);
+                leftRotate(grandparent);
             }
         }
     }
@@ -313,10 +360,8 @@ template<typename T, typename K>
 // in the subtree of the given node
 NodeRB<T, K> *MyRB<T, K>::successor(NodeRB<T, K> *x) {
     NodeRB<T, K> *temp = x;
-
     while (temp->left != nullptr)
         temp = temp->left;
-
     return temp;
 }
 
@@ -424,10 +469,10 @@ void MyRB<T, K>::fixDoubleBlack(NodeRB<T, K> *x) {
             sibling->color = false;
             if (sibling->isOnLeft()) {
                 // left case
-                rotateRight(parent);
+                rightRotate(parent);
             } else {
                 // right case
-                rotateLeft(parent);
+                leftRotate(parent);
             }
             fixDoubleBlack(x);
         } else {
@@ -439,24 +484,24 @@ void MyRB<T, K>::fixDoubleBlack(NodeRB<T, K> *x) {
                         // left left
                         sibling->left->color = sibling->color;
                         sibling->color = parent->color;
-                        rotateRight(parent);
+                        rightRotate(parent);
                     } else {
                         // right left
                         sibling->left->color = parent->color;
-                        rotateRight(sibling);
-                        rotateLeft(parent);
+                        rightRotate(sibling);
+                        leftRotate(parent);
                     }
                 } else {
                     if (sibling->isOnLeft()) {
                         // left right
                         sibling->right->color = parent->color;
-                        rotateLeft(sibling);
-                        rotateRight(parent);
+                        leftRotate(sibling);
+                        rightRotate(parent);
                     } else {
                         // right right
                         sibling->right->color = sibling->color;
                         sibling->color = parent->color;
-                        rotateLeft(parent);
+                        leftRotate(parent);
                     }
                 }
                 parent->color = false;
@@ -541,6 +586,3 @@ int MyRB<T, K>::GetNum() { return NumOfViews; }
 
 template<typename T, typename K>
 void MyRB<T, K>::SetNum() { NumOfViews = 0; }
-
-
-

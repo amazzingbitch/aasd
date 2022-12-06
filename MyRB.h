@@ -35,6 +35,8 @@ public:
     NodeRB<T, K> *BSTreplace(NodeRB<T, K> *x);
     void deleteNode(NodeRB<T, K> *v);
     void fixDoubleBlack(NodeRB<T, K> *x);
+    NodeRB<T, K> *rotateLeft(NodeRB<T, K> *node);
+    NodeRB<T, K> *rotateRight(NodeRB<T, K> *node);
 
     /*class Iterator {
         MyRB* p;
@@ -90,6 +92,10 @@ private:
     bool rr = false;
     bool lr = false;
     bool rl = false;
+
+    void leftRotate(NodeRB<T, K> *x);
+
+    void rightRotate(NodeRB<T, K> *x);
 };
 
 

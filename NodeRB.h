@@ -43,6 +43,17 @@ public:
         return parent->left;
     }
 
+    void moveDown(NodeRB *nParent) {
+        if (parent != nullptr) {
+            if (isOnLeft()) {
+                parent->left = nParent;
+            } else {
+                parent->right = nParent;
+            }
+        }
+        nParent->parent = parent;
+        parent = nParent;
+    }
 
     bool hasRedChild() {
         return (left != nullptr and left->color == true) or
