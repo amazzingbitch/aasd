@@ -206,7 +206,7 @@ void Menu() {
     cout << "Value of next node after root = " << *it.operator++() << endl;
     cout << "Value of previous node = " << *it.operator--() << endl;*/
 
-    test_rand(50);
+    test_rand(25);
     //test_ord(1000);
 
     while (f) {

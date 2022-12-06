@@ -255,7 +255,7 @@ void MyRB<T, K>::swapValues(NodeRB<T, K> *u, NodeRB<T, K> *v) {
     K temp; T temp2;
     temp2 = u->value;
     u->value = v->value;
-    v->value = temp;
+    v->value = temp2;
     temp = u->key;
     u->key = v->key;
     v->key = temp;
