@@ -17,21 +17,24 @@ public:
     int GetSize();
     void Clear(NodeRB<T,K>* t);
     bool IsEmpty();
-    bool* Insert(NodeRB<T,K>* t, K k, T data);
-    NodeRB<T,K>* Insert1(NodeRB<T,K>* t, K k, T data, int s, bool* inserted, NodeRB<T,K>* p);
-    NodeRB<T, K>* L(NodeRB<T, K>* t);
-    NodeRB<T, K>* R(NodeRB<T, K>* t);
-    void replaceParentsChild(NodeRB<T, K> *parent, NodeRB<T, K> *oldChild, NodeRB<T, K> *newChild);
+    bool* Insert(K k, T data);
+    NodeRB<T,K>* insertHelp(NodeRB<T,K>* t, K k, T data, bool* inserted);
     void t_L_R(NodeRB<T, K> *t, std::list<K> *list);
     NodeRB<T,K>* GetRoot();
     void Copy(NodeRB<T,K>* t);
     NodeRB<T,K>* Search(NodeRB<T,K>* t, K k);
     bool ReplaceByKey(K k, T data);
-    NodeRB<T,K>* Delete(NodeRB<T,K>* t, K k, bool* deleted);
-    NodeRB<T,K>* Del(NodeRB<T,K>* t, NodeRB<T,K>* t0, bool* deleted);
+    void Delete(K k);
     void Show(NodeRB<T, K> *t, int level);
     int GetNum();
     void SetNum();
+    void swapColors(NodeRB<T, K> *x1, NodeRB<T, K> *x2);
+    void swapValues(NodeRB<T, K> *u, NodeRB<T, K> *v);
+    void fixRedRed(NodeRB<T, K> *x);
+    NodeRB<T, K> *successor(NodeRB<T, K> *x);
+    NodeRB<T, K> *BSTreplace(NodeRB<T, K> *x);
+    void deleteNode(NodeRB<T, K> *v);
+    void fixDoubleBlack(NodeRB<T, K> *x);
 
     /*class Iterator {
         MyRB* p;
@@ -83,8 +86,10 @@ private:
     int size = 0;
     NodeRB<T,K>* root;
     int NumOfViews = 0;
-
-
+    bool ll = false;
+    bool rr = false;
+    bool lr = false;
+    bool rl = false;
 };
 
 

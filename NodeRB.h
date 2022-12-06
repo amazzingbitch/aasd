@@ -11,7 +11,43 @@ public:
     NodeRB *parent = nullptr;
     T value;
     K key;
-    bool color = false; // black
+    bool color = true; // black
+
+
+// returns pointer to uncle
+    NodeRB *uncle() {
+        // If no parent or grandparent, then no uncle
+        if (parent == nullptr or parent->parent == nullptr)
+            return nullptr;
+
+        if (parent->isOnLeft())
+            // uncle on right
+            return parent->parent->right;
+        else
+            // uncle on left
+            return parent->parent->left;
+    }
+
+// check if node is left child of parent
+    bool isOnLeft() { return this == parent->left; }
+
+// returns pointer to sibling
+    NodeRB *sibling() {
+        // sibling null if no parent
+        if (parent == nullptr)
+            return nullptr;
+
+        if (isOnLeft())
+            return parent->right;
+
+        return parent->left;
+    }
+
+
+    bool hasRedChild() {
+        return (left != nullptr and left->color == true) or
+               (right != nullptr and right->color == true);
+    }
 };
 
 

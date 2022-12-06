@@ -190,15 +190,17 @@ void Menu() {
     bool *ins = new bool;
     NodeRB<int, int> *t = nullptr;
 
-    G.Insert(G.GetRoot(), 15, 45);
-    G.Insert(G.GetRoot(), 10, 48);
-    G.Insert(G.GetRoot(), 5, 41);
-    G.Insert(G.GetRoot(), 50, 1);
-    G.Insert(G.GetRoot(), 11, 11);
-    G.Insert(G.GetRoot(), 21, 4);
-    G.Insert(G.GetRoot(), 25, 41);
-    G.Insert(G.GetRoot(), 52, 55);
-    G.Insert(G.GetRoot(), 30, 30);
+    G.Insert(13, 45);
+    G.Insert(8, 48);
+    G.Insert(17, 41);
+    G.Insert(1, 1);
+    G.Insert(11, 11);
+    G.Insert(15, 4);
+    G.Insert(25, 41);
+    G.Insert(22, 55);
+    G.Insert(27, 30);
+    G.Insert(6, 30);
+    G.Insert(6, 28);
     G.SetNum();
 
     /*MyRB<int,int>::Iterator it(G.GetRoot(), &G);
@@ -248,13 +250,13 @@ void Menu() {
                 cout << "Enter value to insert:" << endl;
                 j = Check();
 
-                if (*G.Insert(G.GetRoot(), k, j)) cout << "Value was successfully added" << endl;
+                if (G.Insert(k, j)) cout << "Value was successfully added" << endl;
                 Stat(&G);
                 break;
             case 9:
                 cout << "Enter key to delete:" << endl;
                 k = Check();
-                G.Delete(G.GetRoot(), k, ins);
+                G.Delete(k);
                 Stat(&G);
                 break;
             case 10:
