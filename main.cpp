@@ -80,7 +80,6 @@ void test_rand(int n) { //Тест трудоёмкости операций с�
     cout << "count delete: " << D/(n/2) << endl; //экспериментальной оценки трудоёмкости удаления
     cout << "count search: " << S/(n/2) << endl; //экспериментальной оценки трудоёмкости поиска
     delete[] m;
-    tree.Clear(tree.GetRoot());
 }
 
 void test_ord(int n) { //Тест трудоёмкости операций вырожденного BST-дерева
@@ -207,8 +206,8 @@ void Menu() {
     cout << "Value of next node after root = " << *it.operator++() << endl;
     cout << "Value of previous node = " << *it.operator--() << endl;*/
 
-    test_rand(50);
-    //test_ord(1000);
+    test_rand(20);
+    //test_ord(100);
 
     while (f) {
         switch (Options()) {

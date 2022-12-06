@@ -17,7 +17,7 @@ public:
 // returns pointer to uncle
     NodeRB *uncle() {
         // If no parent or grandparent, then no uncle
-        if (parent == nullptr or parent->parent == nullptr)
+        if (parent == nullptr || parent->parent == nullptr)
             return nullptr;
 
         if (parent->isOnLeft())
@@ -56,8 +56,8 @@ public:
     }
 
     bool hasRedChild() {
-        return (left != nullptr and left->color == true) or
-               (right != nullptr and right->color == true);
+        return (left != nullptr && left->color == true) ||
+               (right != nullptr && right->color == true);
     }
 };
 

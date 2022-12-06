@@ -329,13 +329,13 @@ template<typename T, typename K>
 // find node that replaces a deleted node in BST
 NodeRB<T, K> *MyRB<T, K>::BSTreplace(NodeRB<T, K> *x) {
     // when node have 2 children
-    if (x->left != nullptr and x->right != nullptr) {
+    if ((x->left != nullptr) && (x->right != nullptr)) {
         NumOfViews+=2;
         return successor(x->right);
     }
 
     // when leaf
-    if (x->left == nullptr and x->right == nullptr) {
+    if ((x->left == nullptr) && (x->right == nullptr)) {
         NumOfViews+=2;
         return nullptr;
     }
@@ -353,7 +353,7 @@ void MyRB<T, K>::deleteNode(NodeRB<T, K> *v) {
     NodeRB<T, K> *u = BSTreplace(v);
 
     // True when u and v are both black
-    bool uvBlack = ((u == nullptr or u->color == false) and (v->color == false));
+    bool uvBlack = ((u == nullptr || u->color == false) && (v->color == false));
     NodeRB<T, K> *parent = v->parent;
     NumOfViews++;
 
@@ -390,7 +390,7 @@ void MyRB<T, K>::deleteNode(NodeRB<T, K> *v) {
         return;
     }
 
-    if (v->left == nullptr or v->right == nullptr) {
+    if (v->left == nullptr || v->right == nullptr) {
         NumOfViews+=2;
         // v has 1 child
         if (v == root) {
@@ -458,7 +458,7 @@ void MyRB<T, K>::fixDoubleBlack(NodeRB<T, K> *x) {
             if (sibling->hasRedChild()) {
                 NumOfViews+=2;
                 // at least 1 red children
-                if (sibling->left != nullptr and sibling->left->color == true) {
+                if (sibling->left != nullptr && sibling->left->color == true) {
                     NumOfViews++;
                     if (sibling->isOnLeft()) {
                         // left left
