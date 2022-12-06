@@ -396,6 +396,7 @@ void MyRB<T, K>::deleteNode(NodeRB<T, K> *v) {
         if (v == root) {
             // v is root, assign the value of u to v, and delete u
             v->value = u->value;
+            v->key = u->key;
             v->left = v->right = nullptr;
             delete u;
         } else {
