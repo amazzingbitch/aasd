@@ -29,6 +29,7 @@ bool* MyRB<T, K>::Insert(K k, T data) {
         root = new NodeRB<T,K>(data, k);
         root->color = false;
         *ins = true;
+        size++;
     } else
         root = insertHelp(root, k, data, ins);
 
@@ -37,75 +38,20 @@ bool* MyRB<T, K>::Insert(K k, T data) {
 
 template<typename T, typename K>
 NodeRB<T, K>* MyRB<T, K>::insertHelp(NodeRB<T, K>* t, K k, T data, bool* inserted) {
-    /*if (t == nullptr) {
-        t = new NodeRB<T,K>(data, k);
-        if (root == nullptr) { root = t ; }
-        t->parent = p;
-        t->color = true;
-        *inserted = true;
-        size++;
-        *//*Show(GetRoot(), 0);
-        cout << endl;*//*
-        return t;
-    }
-    if (k == t->key) {
-        *inserted = false;
-        NumOfViews++;
-        return t;
-    }
-    if (t->left != nullptr && t->right != nullptr){
-        if (t->left->color && t->right->color) {
-            t->color = true;
-            t->left->color = t->right->color = false;
-            *inserted = false;
-            NumOfViews++;
-            //return t;
-        }
-    }
-    bool* ins = new bool;
-    if (k < t->key) {
-        t->left = Insert1(t->left, k, data, 0, ins, t);
-        if (t->left != nullptr)
-        if (t->color && t->left->color && s == 1) { t = R(t); cout << "rt" << k << endl;}
-        if (t->left != nullptr)
-        if (t->left->left != nullptr) {
-            if (t->color && t->left->left->color) {
-                t = R(t);
-                cout << "rt" << k << endl;
-                t->color = false;
-                if (t->right != nullptr) t->right->color = true;
-            }
-        }
-        inserted = ins;
-        NumOfViews++;
-        return t;
-    } else {
-        t->right = Insert1(t->right, k, data, 1, ins, t);
-        if (t->right != nullptr)
-        if (t->color && t->right->color && s == 0) {t = L(t); cout << "lt" << k << endl; }
-        if (t->right != nullptr)
-        if (t->right->right != nullptr) {
-            if (t->color && t->right->right->color) {
-                t = L(t);
-                cout << "lt" << k << endl;
-                t->color = false;
-                if (t->left != nullptr) t->left->color = true;
-            }
-        }
-        inserted = ins;
-        NumOfViews++;
-        return t;
-    }*/
     bool f = false;
-    if (t == nullptr)
+    if (t == nullptr) {
+        size++;
         return (new NodeRB<T,K>(data, k));
+    }
     else if (k == t->key) {
         *inserted = false;
+        NumOfViews++;
+        return t;
     }
-    else if (k < t->key)
-    {
+    else if (k < t->key) {
         t->left = insertHelp(t->left, k, data, inserted);
         t->left->parent = t;
+        NumOfViews++;
         if (t != root) {
             if (t->color && t->left->color)
                 f = true;
@@ -113,6 +59,7 @@ NodeRB<T, K>* MyRB<T, K>::insertHelp(NodeRB<T, K>* t, K k, T data, bool* inserte
     } else {
         t->right = insertHelp(t->right, k, data, inserted);
         t->right->parent = t;
+        NumOfViews++;
         if (t != root) {
             if (t->color && t->right->color)
                 f = true;
@@ -187,6 +134,7 @@ NodeRB<T, K>* MyRB<T, K>::insertHelp(NodeRB<T, K>* t, K k, T data, bool* inserte
                     t->parent->color = true;
             }
         }
+        NumOfViews++;
         f = false;
     }
     return t;
@@ -201,6 +149,7 @@ NodeRB<T, K>* MyRB<T, K>::rotateLeft(NodeRB<T, K>* node) {
     node->parent = x; // parent resetting is also important.
     if (y!= nullptr)
         y->parent = node;
+    NumOfViews+=3;
     return(x);
 }
 
@@ -213,6 +162,7 @@ NodeRB<T, K>* MyRB<T, K>::rotateRight(NodeRB<T, K>*node) {
     node->parent = x;
     if(y!= nullptr)
         y->parent = node;
+    NumOfViews+=3;
     return(x);
 }
 
@@ -236,6 +186,7 @@ void MyRB<T, K>::leftRotate(NodeRB<T, K>*x) {
 
     // connect new parent with x
     nParent->left = x;
+    NumOfViews+=3;
 }
 
 template<typename T, typename K>
@@ -258,6 +209,7 @@ void MyRB<T, K>::rightRotate(NodeRB<T, K>*x) {
 
     // connect new parent with x
     nParent->right = x;
+    NumOfViews+=3;
 }
 
 template<typename T, typename K>
@@ -295,6 +247,7 @@ void MyRB<T, K>::swapColors(NodeRB<T, K> *x1, NodeRB<T, K> *x2) {
     temp = x1->color;
     x1->color = x2->color;
     x2->color = temp;
+    //NumOfViews+=2;
 }
 
 template<typename T, typename K>
@@ -306,6 +259,7 @@ void MyRB<T, K>::swapValues(NodeRB<T, K> *u, NodeRB<T, K> *v) {
     temp = u->key;
     u->key = v->key;
     v->key = temp;
+    //NumOfViews+=2;
 }
 
 template<typename T, typename K>
@@ -319,7 +273,7 @@ void MyRB<T, K>::fixRedRed(NodeRB<T, K> *x) {
     // initialize parent, grandparent, uncle
     NodeRB<T, K> *parent = x->parent, *grandparent = parent->parent,
             *uncle = x->uncle();
-
+    NumOfViews+=5;
     if (parent->color != false) {
         if (uncle != nullptr && uncle->color == true) {
             // uncle red, perform recoloring and recurse
@@ -332,8 +286,10 @@ void MyRB<T, K>::fixRedRed(NodeRB<T, K> *x) {
             if (parent->isOnLeft()) {
                 if (x->isOnLeft()) {
                     // for left right
+                    NumOfViews+=2;
                     swapColors(parent, grandparent);
                 } else {
+                    NumOfViews++;
                     leftRotate(parent);
                     swapColors(x, grandparent);
                 }
@@ -344,8 +300,10 @@ void MyRB<T, K>::fixRedRed(NodeRB<T, K> *x) {
                     // for right left
                     rightRotate(parent);
                     swapColors(x, grandparent);
+                    NumOfViews++;
                 } else {
                     swapColors(parent, grandparent);
+                    NumOfViews++;
                 }
 
                 // for right right and right left
@@ -360,8 +318,10 @@ template<typename T, typename K>
 // in the subtree of the given node
 NodeRB<T, K> *MyRB<T, K>::successor(NodeRB<T, K> *x) {
     NodeRB<T, K> *temp = x;
-    while (temp->left != nullptr)
+    while (temp->left != nullptr) {
         temp = temp->left;
+        NumOfViews++;
+    }
     return temp;
 }
 
@@ -369,13 +329,17 @@ template<typename T, typename K>
 // find node that replaces a deleted node in BST
 NodeRB<T, K> *MyRB<T, K>::BSTreplace(NodeRB<T, K> *x) {
     // when node have 2 children
-    if (x->left != nullptr and x->right != nullptr)
+    if (x->left != nullptr and x->right != nullptr) {
+        NumOfViews+=2;
         return successor(x->right);
+    }
 
     // when leaf
-    if (x->left == nullptr and x->right == nullptr)
+    if (x->left == nullptr and x->right == nullptr) {
+        NumOfViews+=2;
         return nullptr;
-
+    }
+    NumOfViews++;
     // when single child
     if (x->left != nullptr)
         return x->left;
@@ -391,6 +355,7 @@ void MyRB<T, K>::deleteNode(NodeRB<T, K> *v) {
     // True when u and v are both black
     bool uvBlack = ((u == nullptr or u->color == false) and (v->color == false));
     NodeRB<T, K> *parent = v->parent;
+    NumOfViews++;
 
     if (u == nullptr) {
         // u is NULL therefore v is leaf
@@ -404,23 +369,29 @@ void MyRB<T, K>::deleteNode(NodeRB<T, K> *v) {
                 fixDoubleBlack(v);
             } else {
                 // u or v is red
-                if (v->sibling() != nullptr)
+                if (v->sibling() != nullptr) {
                     // sibling is not null, make it red"
                     v->sibling()->color = true;
+                    NumOfViews++;
+                }
             }
 
             // delete v from the tree
             if (v->isOnLeft()) {
                 parent->left = nullptr;
+                NumOfViews+=2;
             } else {
                 parent->right = nullptr;
+                NumOfViews+=2;
             }
         }
         delete v;
+        size--;
         return;
     }
 
     if (v->left == nullptr or v->right == nullptr) {
+        NumOfViews+=2;
         // v has 1 child
         if (v == root) {
             // v is root, assign the value of u to v, and delete u
@@ -431,11 +402,15 @@ void MyRB<T, K>::deleteNode(NodeRB<T, K> *v) {
             // Detach v from tree and move u up
             if (v->isOnLeft()) {
                 parent->left = u;
+                NumOfViews+=2;
             } else {
                 parent->right = u;
+                NumOfViews+=2;
             }
             delete v;
+            size--;
             u->parent = parent;
+            //NumOfViews++;
             if (uvBlack) {
                 // u and v both black, fix double black at u
                 fixDoubleBlack(u);
@@ -459,6 +434,7 @@ void MyRB<T, K>::fixDoubleBlack(NodeRB<T, K> *x) {
         return;
 
     NodeRB<T, K> *sibling = x->sibling(), *parent = x->parent;
+    NumOfViews+=2;
     if (sibling == nullptr) {
         // No sibiling, double black pushed up
         fixDoubleBlack(parent);
@@ -474,12 +450,15 @@ void MyRB<T, K>::fixDoubleBlack(NodeRB<T, K> *x) {
                 // right case
                 leftRotate(parent);
             }
+            NumOfViews++;
             fixDoubleBlack(x);
         } else {
             // Sibling black
             if (sibling->hasRedChild()) {
+                NumOfViews+=2;
                 // at least 1 red children
                 if (sibling->left != nullptr and sibling->left->color == true) {
+                    NumOfViews++;
                     if (sibling->isOnLeft()) {
                         // left left
                         sibling->left->color = sibling->color;
@@ -491,14 +470,17 @@ void MyRB<T, K>::fixDoubleBlack(NodeRB<T, K> *x) {
                         rightRotate(sibling);
                         leftRotate(parent);
                     }
+                    NumOfViews++;
                 } else {
                     if (sibling->isOnLeft()) {
                         // left right
+                        NumOfViews+=2;
                         sibling->right->color = parent->color;
                         leftRotate(sibling);
                         rightRotate(parent);
                     } else {
                         // right right
+                        NumOfViews+=2;
                         sibling->right->color = sibling->color;
                         sibling->color = parent->color;
                         leftRotate(parent);
@@ -506,6 +488,7 @@ void MyRB<T, K>::fixDoubleBlack(NodeRB<T, K> *x) {
                 }
                 parent->color = false;
             } else {
+                NumOfViews+=2;
                 // 2 black children
                 sibling->color = true;
                 if (parent->color == false)

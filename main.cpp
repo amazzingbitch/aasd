@@ -28,7 +28,7 @@ INT_64 LineRand() { //функция генерации случайного ч�
     return RRand;
 }
 
-/*void test_rand(int n) { //Тест трудоёмкости операций случайного BST-дерева
+void test_rand(int n) { //Тест трудоёмкости операций случайного BST-дерева
     MyRB<INT_64, int> tree; //создание дерева для 64 – разрядных ключей типа INT_64
     auto* m = new INT_64 [n]; //массив для ключей, которые присутствуют в дереве
     sRand();  //установка первого случайного числа
@@ -37,7 +37,7 @@ INT_64 LineRand() { //функция генерации случайного ч�
 
     for (int i = 0; i < n; i++) { //заполнение дерева и массива элементами со случайными ключами
         m[i] = LineRand();
-        tree.Insert(tree.GetRoot(),m[i],1, ins);
+        tree.Insert(m[i],1);
         tree.SetNum();
     }
 
@@ -49,10 +49,10 @@ INT_64 LineRand() { //функция генерации случайного ч�
 
     for (int i = 0; i < n/2; i++) //генерация потока операций, 10% - промахи операций
         if (i % 10 == 0) { //10% промахов
-            tree.Delete(tree.GetRoot(), LineRand(), ins);
+            tree.Delete(LineRand());
             D += tree.GetNum();
             tree.SetNum();
-            tree.Insert(tree.GetRoot(), m[rand() % n], 1, ins);
+            tree.Insert(m[rand() % n], 1);
             I += tree.GetNum();
             tree.SetNum();
             tree.Search(tree.GetRoot(),LineRand());
@@ -61,11 +61,11 @@ INT_64 LineRand() { //функция генерации случайного ч�
         }
         else { // 90% успешных операций
             int ind = rand() % n;
-            tree.Delete(tree.GetRoot(), m[ind], ins);
+            tree.Delete(m[ind]);
             D += tree.GetNum();
             tree.SetNum();
             INT_64 key = LineRand();
-            tree.Insert(tree.GetRoot(), key, 1, ins);
+            tree.Insert(key, 1);
             I += tree.GetNum();
             tree.SetNum();
             m[ind] = key;
@@ -75,7 +75,7 @@ INT_64 LineRand() { //функция генерации случайного ч�
         }
 
     cout << "items count: " << tree.GetSize() << endl; //вывод размера дерева после теста
-    cout << "1.39 * log2(n) = " << 1.39 * (log((double)n) / log(2.0)) << endl; //теоретической оценки трудоёмкости операций BST
+    cout << "1.002 * log2(n) = " << 1.002 * (log((double)n) / log(2.0)) << endl; //теоретической оценки трудоёмкости операций BST
     cout << "count insert: " << I/(n/2) << endl; //экспериментальной оценки трудоёмкости вставки
     cout << "count delete: " << D/(n/2) << endl; //экспериментальной оценки трудоёмкости удаления
     cout << "count search: " << S/(n/2) << endl; //экспериментальной оценки трудоёмкости поиска
@@ -90,7 +90,7 @@ void test_ord(int n) { //Тест трудоёмкости операций вы
 
     for (int i = 0; i < n; i++) {//заполнение дерева и массива элементами с возрастающими чётными ключами на интервале [0, 10000, 20000, ... ,10000*n]
         m[i] = i * 10000;
-        tree.Insert(tree.GetRoot(),m[i],1, ins);
+        tree.Insert(m[i],1);
         tree.SetNum();
     }
 
@@ -106,10 +106,10 @@ void test_ord(int n) { //Тест трудоёмкости операций вы
         if (i % 10 == 0) { // 10% промахов
             int k = LineRand() % (10000 * n);
             k = k + !(k % 2); //случайный нечётный ключ
-            tree.Delete(tree.GetRoot(), k, ins);
+            tree.Delete(k);
             D += tree.GetNum();
             tree.SetNum();
-            tree.Insert(tree.GetRoot(), m[rand() % n], 1, ins);
+            tree.Insert(m[rand() % n], 1);
             I += tree.GetNum();
             tree.SetNum();
             k = LineRand() % (10000 * n);
@@ -119,12 +119,12 @@ void test_ord(int n) { //Тест трудоёмкости операций вы
             tree.SetNum();
         } else { // 90% успешных операций
             int ind = rand() % n;
-            tree.Delete(tree.GetRoot(), m[ind], ins);
+            tree.Delete(m[ind]);
             D += tree.GetNum();
             tree.SetNum();
             int k = LineRand() % (10000 * n);
             k = k + k % 2; // случайный чётный ключ
-            tree.Insert(tree.GetRoot(), k, 1, ins);
+            tree.Insert(k, 1);
             I += tree.GetNum();
             tree.SetNum();
             m[ind] = k;
@@ -135,12 +135,12 @@ void test_ord(int n) { //Тест трудоёмкости операций вы
     }
 
     cout << "items count: " << tree.GetSize() << endl; //вывод размера дерева после теста
-    cout << "n/2 = " << n/2 << endl; //теоретической оценки трудоёмкости операций BST
+    cout << "1.002 * log2(n) = " << 1.002 * (log((double)n) / log(2.0)) << endl; //теоретической оценки трудоёмкости операций BST
     cout << "count insert: " << I/(n/2) << endl; //экспериментальной оценки трудоёмкости вставки
     cout << "count delete: " << D/(n/2) << endl; //экспериментальной оценки трудоёмкости удаления
     cout << "count search: " << S/(n/2) << endl; //экспериментальной оценки трудоёмкости поиска
     delete[] m;
-}*/
+}
 
 int Check() {
     int m;
@@ -186,11 +186,10 @@ void Menu() {
 
     //MyRB<int, int> V(&G);
 
-    std::list<int> p;
     bool *ins = new bool;
     NodeRB<int, int> *t = nullptr;
 
-    G.Insert(13, 45);
+    /*G.Insert(13, 45);
     G.Insert(8, 48);
     G.Insert(17, 41);
     G.Insert(1, 1);
@@ -200,14 +199,14 @@ void Menu() {
     G.Insert(22, 55);
     G.Insert(27, 30);
     G.Insert(6, 30);
-    G.Insert(6, 28);
+    G.Insert(6, 28);*/
     G.SetNum();
 
     /*MyRB<int,int>::Iterator it(G.GetRoot(), &G);
     cout << "Value of next node after root = " << *it.operator++() << endl;
     cout << "Value of previous node = " << *it.operator--() << endl;*/
 
-    //test_rand(100);
+    test_rand(50);
     //test_ord(1000);
 
     while (f) {

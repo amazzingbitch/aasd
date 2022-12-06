@@ -38,14 +38,14 @@ public:
     NodeRB<T, K> *rotateLeft(NodeRB<T, K> *node);
     NodeRB<T, K> *rotateRight(NodeRB<T, K> *node);
 
-    /*class Iterator {
+    class Iterator {
         MyRB* p;
         NodeRB<T,K>* cur;
     public:
         explicit Iterator(NodeRB<T,K>* cur_, MyRB* p_): cur(cur_), p(p_) {};
         T& operator* () { return cur->value; }
         Iterator& operator++() { if (cur->right != nullptr) cur = cur->right; return *this; }
-        Iterator& operator--() { cur = p->Pre(cur); return *this; }
+        Iterator& operator--() { cur = cur->parent; return *this; }
         bool operator==(const Iterator& it) { return cur == it.cur; }
         bool operator!=(const Iterator& it) { return cur != it.cur; }
     };
@@ -56,7 +56,7 @@ public:
     public:
         ReverseIterator(NodeRB<T,K>* cur_, MyRB* p_): cur(cur_), p(p_) {};
         T& operator* () { return cur->value; }
-        ReverseIterator& operator++() { cur = p->Pre(cur); return *this; }
+        ReverseIterator& operator++() { cur = cur->parent; return *this; }
         ReverseIterator& operator--() { if (cur->right != nullptr) cur = cur->right; return *this; }
         bool operator==(const ReverseIterator& it) { return cur == it.cur; }
         bool operator!=(const ReverseIterator& it) { return cur != it.cur; }
@@ -82,7 +82,7 @@ public:
         NodeRB<T,K>* t = root;
         while (t->left != nullptr) t = t->left;
         return ReverseIterator(t, this);
-    }*/
+    }
 
 private:
     int size = 0;
